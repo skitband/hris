@@ -125,7 +125,7 @@
 
                     <div class="chart">
                       <!-- Sales Chart Canvas -->
-                      <canvas id="salesChart" height="180" style="height: 180px;"></canvas>
+                      <!-- <canvas id="salesChart" height="180" style="height: 180px;"></canvas> -->
                     </div>
                     <!-- /.chart-responsive -->
                   </div>
@@ -708,7 +708,7 @@
                 <div class="row">
                   <div class="col-md-8">
                     <div class="chart-responsive">
-                      <canvas id="pieChart" height="150"></canvas>
+                      <!-- <canvas id="pieChart" height="150"></canvas> -->
                     </div>
                     <!-- ./chart-responsive -->
                   </div>

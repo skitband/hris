@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use Yajra\Datatables\Datatables;
 use App\Employee;
 
 class EmployeeController extends Controller
@@ -21,13 +22,43 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        // if(!Auth::check()){
-        //    return redirect()->route('index');
-        // }
+        if(!Auth::check()){
+           return redirect()->route('index');
+        }
         
-       $employee = Employee::paginate(10);
-       return view('admin/manage')->with("employees", $employee);
+       // $employee = Employee::paginate(10);
+       // return view('admin/manage')->with("employees", $employee);
+
+        return view('admin/dashboard');
+        
     }
+
+    public function manage()
+    {
+        return view('admin/manage');
+    }
+
+    public function getEmployees()
+    {
+       
+       $employee = Employee::query()->select('id', 'emp_id', 'first_name', 'last_name', 'middle_name', 'address', 'birthdate', 'job', 'created_at')->where('active', '=', '1');
+
+        return Datatables::of($employee)
+            ->addColumn('fullname', function ($employee) {
+                return $employee->last_name .", ". $employee->first_name ." ". substr($employee->middle_name, 0,1).".";
+            })
+            ->addColumn('action', function ($employee) {
+                return '<a href="'.route('employee.show', $employee->id) .'" class="btn btn-secondary btn-sm"><i class="nav-icon fa fa-pencil"></i> Edit</a> 
+                <button data-remote="'.route('employee.destroy', $employee->id) .'" class="btn btn-danger btn-sm btn-delete"><i class="nav-icon fa fa-trash"></i> Delete</button>';
+            })
+            ->editColumn('birthdate', function ($employee) {
+                return date('m-d-Y', strtotime($employee->birthdate));
+            })
+            ->make(true);
+        
+    }
+
+
 
     /**
      * Show the form for creating a new resource.

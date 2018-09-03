@@ -15,6 +15,9 @@
   <link rel="stylesheet" href="{{asset('dist/css/adminlte.min.css')}}">
   <!-- iCheck -->
   <link rel="stylesheet" href="{{asset('plugins/iCheck/square/blue.css')}}">
+  <!-- datatables css -->
+  <link rel="stylesheet" href="{{asset('css/datatables.min.css')}}">
+  <link rel="stylesheet" href="{{asset('css/buttons.dataTables.min.css')}}">
   <!-- custom css -->
   <link rel="stylesheet" href="{{asset('dist/css/style.css')}}">
   <!-- Google Font: Source Sans Pro -->
