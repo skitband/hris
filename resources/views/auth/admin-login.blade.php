@@ -1,10 +1,10 @@
 @extends('layouts.master-admin-login')
-@section('title')MAA | HRIS @endsection
+@section('title')COMPANY | HRIS @endsection
 
 @section('content')
 <div class="login-box">
   <div class="login-logo">
-    <a href="#"><b>MAA |</b> HRIS</a>
+    <a href="#"><b>COMPANY |</b> HRIS</a>
   </div>
   <!-- /.login-logo -->
   @if($errors->any())

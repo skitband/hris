@@ -1,10 +1,10 @@
 @extends('layouts.master-register')
-@section('title')MAA | HRIS @endsection
+@section('title')COMPANY | HRIS @endsection
 
 @section('content')
 <div class="login-box">
   <div class="login-logo">
-    <a href="../../index2.html"><b>MAA |</b> HRIS</a>
+    <a href="../../index2.html"><b>COMPANY |</b> HRIS</a>
   </div>
   @if(Session::has('message'))
     <div class="alert alert-success alert-dismissible">
