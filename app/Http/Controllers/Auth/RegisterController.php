@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use App\Employee;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -39,6 +40,12 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
+    public function count_users(){
+        $count = User::count();
+
+        return date('y').'-'.sprintf('%04d',$count);
+    }
+
     /**
      * Get a validator for an incoming registration request.
      *
@@ -62,10 +69,19 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $emp_id = $this->count_users();
+
+        $user = User::create([
+            'emp_id' => $emp_id,
             'username' => $data['username'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+
+        Employee::create([
+            'emp_id' => $emp_id
+        ]);
+
+        return $user;
     }
 }

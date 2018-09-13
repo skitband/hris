@@ -121,17 +121,43 @@ class EmployeeController extends Controller
     {
         //
         $this->validate($request, [
-            'emp_fname' => 'required|min:1|max:100',
-            'emp_mname' => 'min:1|max:100',
-            'emp_lname' => 'required|min:1|max:100'
+            'first_name'    => 'required|min:1|max:100',
+            'middle_name'   => 'min:1|max:100',
+            'last_name'     => 'required|min:1|max:100',
+            'birthdate'     => 'date|required',
+            'address'       => 'required|min:5',
+            'contact'       => 'required|min:6|max:12',
         ]);
 
         $employee = Employee::find($id);
-        $employee->emp_fname = $request->emp_fname;
-        $employee->emp_mname = $request->emp_mname;
-        $employee->emp_lname = $request->emp_lname;
-        $employee->save();
 
+        // Personal
+        $employee->first_name   = $request->first_name;
+        $employee->middle_name  = $request->middle_name;
+        $employee->last_name    = $request->last_name;
+        $employee->birthdate    = $request->birthdate;
+        $employee->address      = $request->address;
+        $employee->contact      = $request->contact;
+        $employee->fathers_name = $request->fathers_name;
+        $employee->mothers_name = $request->mothers_name;
+        $employee->height       = $request->height;
+        $employee->weight       = $request->weight;
+        $employee->blood_type   = $request->blood_type;
+
+        // Work
+        $employee->job          = $request->job;
+        $employee->department   = $request->department;
+        $employee->rank         = $request->rank;
+        $employee->level        = $request->level;
+
+        // Others
+        $employee->school         = $request->school;
+        $employee->course         = $request->course;
+        $employee->year_graduated = $request->year_graduated;
+        $employee->skills         = $request->skills;
+        $employee->hobbies        = $request->hobbies;
+
+        $employee->save();
         $message = array('message' => 'Profile Successfully Updated!');
         return redirect()->back()->with($message);
     }
