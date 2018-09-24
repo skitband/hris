@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 use Yajra\Datatables\Datatables;
 use App\Employee;
 
@@ -79,6 +80,31 @@ class EmployeeController extends Controller
     public function store(Request $request)
     {
         //
+    }
+
+    /**
+     * Change Photo
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store_photo(Request $request, $id)
+    {
+        $this->validate($request, [
+            'photo'  => 'required|image'
+        ]);
+
+        $employee = Employee::find($id);
+
+        $employee->photo = $request->file('photo');
+        $path = storage_path('/uploads/');
+        $filename = time() . '.' . $employee->photo->getClientOriginalExtension();
+        $employee->photo->move($path, $filename);
+        $employee->photo = $filename;
+
+        $employee->save();
+        $message = array('message' => 'Photo Successfully Updated!');
+        return redirect()->back()->with($message);
     }
 
     /**

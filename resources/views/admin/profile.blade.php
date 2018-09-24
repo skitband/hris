@@ -34,7 +34,7 @@
                 
                 <div class="text-center">
                     <img class="profile-user-img img-fluid img-circle profilepic"
-                         src="../../dist/img/user4-128x128.jpg"
+                         src="{{Storage::url('uploads/'.$employee->photo)}}"
                          alt="User profile picture">
                     <div class="profilemiddle">
                       <!-- <div class="profiletext">Upload Photo</div> -->
@@ -44,8 +44,13 @@
                 <h3 class="profile-username text-center">{{$employee->first_name}} {{str_limit($employee->middle_name,1,'.')}} {{$employee->last_name}} </h3>
 
                 <p class="text-muted text-center">{{$employee->job}}</p>
-
-                <a href="#" class="btn btn-primary"><b>Change Photo</b></a>
+                
+                <form class="form_photo" action="{{route('employee.store_photo', $employee->id)}}" method="POST" enctype="multipart/form-data">
+                  {{csrf_field()}}
+                  {{method_field('PUT')}}
+                  <input type="file" id="photo" name="photo">
+                  <input type="submit" class="btn btn-primary btn-sm float-right" name="change_photo" value="Save">
+                </form>
               </div>
               <!-- /.card-body -->
             </div>

@@ -31,7 +31,8 @@ Route::group(['prefix' => 'admin'], function() {
    Route::get('/', 'AdminController@index')->name('admin.dashboard');
    Route::get('/manage', 'Admin\EmployeeController@manage')->name('admin.manage');
    Route::get('/getEmployees', 'Admin\EmployeeController@getEmployees')->name('getEmployees');
-   
+   Route::put('/store_photo/{employee}', 'Admin\EmployeeController@store_photo')->name('employee.store_photo');
+
 });
 
 Route::resource('admin/employee','Admin\EmployeeController');
