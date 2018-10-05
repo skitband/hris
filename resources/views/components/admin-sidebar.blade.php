@@ -63,7 +63,13 @@
               <li class="nav-item">
                 <a href="{{route('admin.manage')}}" class="nav-link">
                   <i class="fa fa-circle-o nav-icon"></i>
-                  <p>Employees</p>
+                  <p>View Employees</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{route('employee.create')}}" class="nav-link">
+                  <i class="fa fa-circle-o nav-icon"></i>
+                  <p>Add Employees</p>
                 </a>
               </li>
               <li class="nav-item">

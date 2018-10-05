@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Yajra\Datatables\Datatables;
 use App\Employee;
+use App\User;
+use Illuminate\Support\Facades\Storage;
 
 class EmployeeController extends Controller
 {
@@ -69,6 +71,14 @@ class EmployeeController extends Controller
     public function create()
     {
         //
+
+        return view('admin/create');
+    }
+
+    public function count_users(){
+
+        $count = Employee::count();
+        return date('y').'-'.sprintf('%04d',$count+1);
     }
 
     /**
@@ -80,6 +90,50 @@ class EmployeeController extends Controller
     public function store(Request $request)
     {
         //
+        $emp_id = $this->count_users();
+
+        // $this->validate($request, [
+        //     'first_name'    => 'required|min:1|max:100',
+        //     'middle_name'   => 'min:1|max:100',
+        //     'last_name'     => 'required|min:1|max:100',
+        //     'birthdate'     => 'date|required',
+        //     'address'       => 'required|min:5',
+        //     'contact'       => 'required|min:2|max:12',
+        // ]);
+
+        $employee = new Employee;
+
+        // // Personal
+        $employee->emp_id       = $emp_id;
+        $employee->first_name   = $request->first_name;
+        $employee->middle_name  = $request->middle_name;
+        $employee->last_name    = $request->last_name;
+        $employee->birthdate    = $request->birthdate;
+        $employee->address      = $request->address;
+        $employee->contact      = $request->contact;
+        $employee->fathers_name = $request->fathers_name;
+        $employee->mothers_name = $request->mothers_name;
+        $employee->height       = $request->height;
+        $employee->weight       = $request->weight;
+        $employee->blood_type   = $request->blood_type;
+
+        // Work
+        $employee->job          = $request->job;
+        $employee->department   = $request->department;
+        $employee->rank         = $request->rank;
+        $employee->level        = $request->level;
+
+        // Others
+        $employee->school         = $request->school;
+        $employee->course         = $request->course;
+        $employee->year_graduated = $request->year_graduated;
+        $employee->skills         = $request->skills;
+        $employee->hobbies        = $request->hobbies;
+
+        $employee->save();
+        $message = array('message' => 'Profile Successfully Added!');
+        return redirect()->back()->with($message);
+        //dd($employee->first_name);
     }
 
     /**
@@ -97,7 +151,7 @@ class EmployeeController extends Controller
         $employee = Employee::find($id);
 
         $employee->photo = $request->file('photo');
-        $path = storage_path('/uploads/');
+        $path = storage_path('/app/public/uploads/avatar');
         $filename = time() . '.' . $employee->photo->getClientOriginalExtension();
         $employee->photo->move($path, $filename);
         $employee->photo = $filename;
@@ -121,7 +175,26 @@ class EmployeeController extends Controller
             return view('404');
         }
 
-        return view('admin/profile')->with("employee", $employee);
+        $emp_id = $employee->emp_id;
+
+        // $directory = storage_path('app/public/uploads/files/'.$id);
+
+        // $files = Storage::files($directory);
+
+        // //return view('admin/profile')->with("employee", $files);
+
+        // dd($files);
+        
+        $path  = storage_path('app/public/uploads/files/'.$emp_id);
+
+        if(!file_exists($path)) {
+            mkdir($path, 0777, true);
+        }
+
+        $files = scandir($path);
+        $files = array_diff(scandir($path), array('.', '..'));
+
+        return view('admin/profile')->with(compact("employee", "files"));
 
     }
 
