@@ -13,3 +13,4 @@ yarn-error.log
 .env
 .phpunit.result.cache
 /storage/app/public/uploads/avatar/*
+/storage/app/public/uploads/files/*
