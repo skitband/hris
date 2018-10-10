@@ -43,24 +43,30 @@
                 </ul>
 
               </div><!-- /.card-header -->
-              <form class="add_profile" name="form_profile" method="POST" action="{{route('employee.store')}}">
+              <form class="add_profile" name="form_profile" method="POST" action="{{route('employee.store')}}" enctype="multipart/form-data">
                 <div class="card-body">
                   <div class="tab-content">
                     <!-- PERSONAL TAB -->
                     <div class="active tab-pane" id="personal">
                         <div class="row">
-                          <div class="col-4">
+                          <div class="col-3">
                             <label>First Name</label> @if($errors->has('first_name')) <small class="text-danger"> First Name Cannot Be Empty</small> @endif
                             <input name="first_name" type="text" class="form-control {{$errors->has('first_name') ? 'is-invalid' : ''}}" placeholder="First Name" >
                           </div>
-                          <div class="col-4">
+                          <div class="col-3">
                             <label>Middle Name</label> 
                             <input name="middle_name" type="text" class="form-control" placeholder="Middle Name">
                           </div>
-                          <div class="col-4">
+                          <div class="col-3">
                             <label>Last Name</label> @if($errors->has('last_name')) <small class="text-danger"> Last Name Cannot Be Empty</small> @endif
                             <input name="last_name" type="text" class="form-control" placeholder="Last Name" >
                           </div>
+                          <div class="col-3">
+                            <label>Photo</label>
+                            <input name="photo" type="file" class="form-control">
+                          </div>
+                        </div>
+                        <div class="row">
                           <div class="col-2">
                             <label>Date of Birth</label> @if($errors->has('birthdate')) <small class="text-danger"> Invalid Date of Birth</small> @endif
                             <input name="birthdate" type="date" class="form-control" placeholder="Date of Birth" >
@@ -69,9 +75,13 @@
                             <label>Contact</label> @if($errors->has('contact')) <small class="text-danger"> Invalid Contact Details</small> @endif
                             <input name="contact" type="number" class="form-control" placeholder="Contact" >
                           </div>
-                          <div class="col-4">
+                          <div class="col-3">
                             <label>Address</label> 
                             <input name="address" type="text" class="form-control" placeholder="Contact" >
+                          </div>
+                          <div class="col-2">
+                            <label>Email</label> 
+                            <input name="email" type="text" class="form-control" placeholder="Email Address" >
                           </div>
                           <div class="col-1">
                             <label>Height</label> 
@@ -154,7 +164,7 @@
                             </div>
                             <!-- /.box-header -->
                             <div class="box-body no-padding">
-                              
+                                <input type="file" name="file[]" multiple>
                             </div>
                             <!-- /.box-body -->
                         </div>
@@ -166,7 +176,7 @@
                 {{csrf_field()}}
                 {{method_field('POST')}}
                 <div class="card-footer">
-                  <button id="addprofile" type="submit" class="btn btn-primary float-right">Save</button>
+                  <button id="addemployee" type="submit" class="btn btn-primary float-right">Save</button>
                 </div>
               </form>
             </div>

@@ -32,10 +32,14 @@ Route::group(['prefix' => 'admin'], function() {
    Route::get('/manage', 'Admin\EmployeeController@manage')->name('admin.manage');
    Route::get('/getEmployees', 'Admin\EmployeeController@getEmployees')->name('getEmployees');
    Route::put('/store_photo/{employee}', 'Admin\EmployeeController@store_photo')->name('employee.store_photo');
-
+   //Route::get('/employee/count', 'Admin\EmployeeController@count_users')->name('count');
+   Route::get('/employee/deletefile/{employee}/{file}', 'Admin\EmployeeController@destroy_file')->name('employee.deletefile');
+   Route::put('/employee/resetpw/{employee}', 'Admin\EmployeeController@resetpw')->name('employee.resetpw');
+   Route::put('/employee/deactivate/{employee}', 'Admin\EmployeeController@deactivate')->name('employee.deactivate');
 });
 
 Route::resource('admin/employee','Admin\EmployeeController');
+
 
 //Route::resource('employee','Admin\EmployeeController');
 

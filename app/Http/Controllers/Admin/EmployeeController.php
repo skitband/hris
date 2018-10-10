@@ -10,6 +10,8 @@ use Yajra\Datatables\Datatables;
 use App\Employee;
 use App\User;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 
 class EmployeeController extends Controller
 {
@@ -51,8 +53,7 @@ class EmployeeController extends Controller
                 return $employee->last_name .", ". $employee->first_name ." ". substr($employee->middle_name, 0,1).".";
             })
             ->addColumn('action', function ($employee) {
-                return '<a href="'.route('employee.show', $employee->id) .'" class="btn btn-secondary btn-sm"><i class="nav-icon fa fa-pencil"></i> Edit</a> 
-                <button data-remote="'.route('employee.destroy', $employee->id) .'" class="btn btn-danger btn-sm btn-delete"><i class="nav-icon fa fa-trash"></i> Delete</button>';
+                return '<a href="'.route('employee.show', $employee->id) .'" class="btn btn-secondary btn-sm"><i class="nav-icon fa fa-pencil"></i> Update</a>';
             })
             ->editColumn('birthdate', function ($employee) {
                 return date('m-d-Y', strtotime($employee->birthdate));
@@ -101,15 +102,44 @@ class EmployeeController extends Controller
         //     'contact'       => 'required|min:2|max:12',
         // ]);
 
+        // upload files
+        $path = storage_path('app/public/uploads/files/'.$emp_id);
+
+        if(!file_exists($path)) {
+
+            mkdir($path, 0777, true);
+
+            if($request->hasFile('file')){
+
+                foreach($request->file as $file){
+
+                    $filename = str_random(12). '.' . $file->getClientOriginalExtension();
+                    $file->move($path, $filename);
+                }
+            }
+        }
+
+        // move uploaded photo
+        if($request->hasFile('photo')){
+
+            $path = storage_path('/app/public/uploads/avatar');
+            $filename = time() . '.' . $request->photo->getClientOriginalExtension();
+            $request->photo->move($path, $filename);
+        
+        }
+        
+        // store to Employee Table
         $employee = new Employee;
 
-        // // Personal
+        // Personal
         $employee->emp_id       = $emp_id;
+        $employee->photo        = $filename;
         $employee->first_name   = $request->first_name;
         $employee->middle_name  = $request->middle_name;
         $employee->last_name    = $request->last_name;
         $employee->birthdate    = $request->birthdate;
         $employee->address      = $request->address;
+        $employee->email        = $request->email;
         $employee->contact      = $request->contact;
         $employee->fathers_name = $request->fathers_name;
         $employee->mothers_name = $request->mothers_name;
@@ -131,9 +161,20 @@ class EmployeeController extends Controller
         $employee->hobbies        = $request->hobbies;
 
         $employee->save();
-        $message = array('message' => 'Profile Successfully Added!');
+
+        // store to users table
+        $user = new User;
+
+        $user->emp_id    = $emp_id;
+        $user->username  = substr(strtolower($request->first_name),0,1).strtolower($request->last_name);
+        $user->email     = $request->email;
+        $user->password  = $request->username;
+
+        $user->save();
+
+        $message = array('message' => 'Employee Successfully Added!');
         return redirect()->back()->with($message);
-        //dd($employee->first_name);
+        //dd($file);
     }
 
     /**
@@ -198,6 +239,16 @@ class EmployeeController extends Controller
 
     }
 
+    public function destroy_file($emp_id, $file){
+
+        $path  = storage_path('app/public/uploads/files/'.$emp_id.'/'.$file);
+
+        if(unlink($path)):
+            $message = array('message' => 'File Successfully Deleted!');
+            return redirect()->back()->with($message);
+        endif;
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -218,14 +269,25 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        // file upload to existing employee
+        $emp_id = $request->emp_id;
+        $path  = storage_path('app/public/uploads/files/'.$emp_id);
+        
+        if($request->hasFile('file')){
+
+            foreach($request->file as $file){
+
+                $filename = str_random(12). '.' . $file->getClientOriginalExtension();
+                $file->move($path, $filename);
+            }
+        }
+        // validation
         $this->validate($request, [
             'first_name'    => 'required|min:1|max:100',
             'middle_name'   => 'min:1|max:100',
             'last_name'     => 'required|min:1|max:100',
-            'birthdate'     => 'date|required',
-            'address'       => 'required|min:5',
-            'contact'       => 'required|min:6|max:12',
+            'birthdate'     => 'date|required'
         ]);
 
         $employee = Employee::find($id);
@@ -259,6 +321,46 @@ class EmployeeController extends Controller
         $employee->save();
         $message = array('message' => 'Profile Successfully Updated!');
         return redirect()->back()->with($message);
+    }
+
+    public function resetpw(Request $request, $emp_id)
+    {
+
+        //$user = User::find($emp_id)->toSql();
+        $password  = $request->username;
+        DB::table('users')
+            ->where('emp_id', $emp_id)
+            ->update(['password' => $password]);
+        //     ->toSql();
+        // Personal
+        //$user->password  = $request->username;
+
+        // $user->save();
+        $message = array('message' => 'Password Successfully Updated!');
+        return redirect()->back()->with($message);
+        //echo $user;
+    }
+
+    public function deactivate(Request $request, $emp_id)
+    {
+
+        //$user = User::find($emp_id)->toSql();
+        $password  = $request->username;
+        DB::table('users')
+            ->where('emp_id', $emp_id)
+            ->update(['active' => '0']);
+
+        DB::table('employees')
+            ->where('emp_id', $emp_id)
+            ->update(['active' => '0']);    
+        //     ->toSql();
+        // Personal
+        //$user->password  = $request->username;
+
+        // $user->save();
+        $message = array('message' => 'Employee Successfully Deactivated!');
+        return redirect()->back()->with($message);
+        //echo $user;
     }
 
     /**

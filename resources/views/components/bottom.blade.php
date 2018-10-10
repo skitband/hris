@@ -41,6 +41,28 @@
       $('.form_profile input').removeAttr('readonly', true);
       $('#updateprofile').removeClass('invisible', true);
     });
+
+    $('.resetpw').click(function(){
+      event.preventDefault();
+
+      if(confirm("Please Confirm Reset Password?")){
+        $('#resetpw-form').submit();
+      }else{
+        return false;
+      }
+      
+    });
+
+    $('.deactivate-link').click(function(){
+      event.preventDefault();
+
+      if(confirm("Please Confirm Deactivate Employee?")){
+        $('#deactivate-form').submit();
+      }else{
+        return false;
+      }
+      
+    });
     
     $('#table_employees').DataTable({
      "stateSave": true,

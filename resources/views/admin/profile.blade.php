@@ -45,7 +45,13 @@
 
                 <h3 class="profile-username text-center">{{$employee->first_name}} {{str_limit($employee->middle_name,1,'.')}} {{$employee->last_name}} </h3>
 
-                <p class="text-muted text-center">{{$employee->job}}</p>
+                <p class="text-muted text-center">
+                  @if($employee->active == 1)
+                    {{$employee->job}}
+                  @else
+                    <span class="badge badge-danger"><i class="fa fa-exclamation-triangle"></i> Inactive</span>
+                  @endif  
+                </p>
                 
                 <form class="form_photo" action="{{route('employee.store_photo', $employee->id)}}" method="POST" enctype="multipart/form-data">
                   {{csrf_field()}}
@@ -127,9 +133,22 @@
                   <li class="list-group-item">
                     <b><i class="fa fa-lock"></i> Password</b> <a class="float-right">*****************</a>
                   </li>
+                  @if($employee->active == 1)
                   <li class="list-group-item">
-                    <a href="#" class="disabled">Reset Password</a> <a class="float-right" href="#">Deactivate Account</a>
+                      <a class="resetpw" href="#">Reset Password</a>
+                      <form id="resetpw-form" action="{{route('employee.resetpw', $employee->emp_id)}}" method="POST" style="display: none;">
+                          {{ csrf_field() }}
+                          {{method_field('PUT')}}
+                          <input type="hidden" name="username" value="{{substr($employee->first_name,0,1).$employee->last_name}}">
+                      </form>
+
+                      <a class="float-right deactivate-link" href="#">Deactivate Account</a>
+                      <form id="deactivate-form" action="{{route('employee.deactivate', $employee->emp_id)}}" method="POST" style="display: none;">
+                          {{ csrf_field() }}
+                          {{method_field('PUT')}}
+                      </form>
                   </li>
+                  @endif
                 </ul>
               </div>
               <!-- /.card-body -->
@@ -156,7 +175,7 @@
                 </ul>
 
               </div><!-- /.card-header -->
-              <form class="form_profile" name="form_profile" method="POST" action="{{route('employee.update', $employee->id)}}">
+              <form class="form_profile" name="form_profile" method="POST" action="{{route('employee.update', $employee->id)}}" enctype="multipart/form-data">
                 <div class="card-body">
                   <div class="tab-content">
                     <!-- PERSONAL TAB -->
@@ -234,7 +253,10 @@
                             <label>Level</label>
                             <input name="level" type="text" class="form-control" placeholder="Level" value="{{$employee->level}}">
                           </div>
-                          
+                          <div class="col-3">
+                            <label>Status</label>
+                            <input name="employment_status" type="text" class="form-control" placeholder="Employment Status" value="{{$employee->employment_status}}">
+                          </div>
                         </div>
                     </div>
                     <!-- OTHERS TAB -->
@@ -268,20 +290,27 @@
                     <div class="tab-pane" id="files">
                       
                         <div class="box">
-                            <div class="box-header">
-                            </div>
+                            <div class="box-header"></div>
+
                             <!-- /.box-header -->
                             <div class="box-body no-padding">
+                              <div class="box-body no-padding">
+                                <input type="hidden" name="emp_id" value="{{ $employee->emp_id }}">
+                                <input type="file" name="file[]" multiple>
+                              </div>
+                              <br>
                               <table class="table table-bordered table-striped datatable" id="table-2">
                                   <thead>
                                       <tr>
                                           <th>Filename</th>
+                                          <th width="3"><i class="fa fa-trash"></i></th>
                                       </tr>
                                   </thead>
                                   <tbody>
                                       @foreach($files as $file)
                                           <tr>
                                               <td><a href="{{asset('storage/uploads/files').'/'.$employee->emp_id.'/'.$file}}" download target="_blank"> {{ $file }} </a></td>
+                                              <td><a href="{{route('employee.deletefile', [$employee->emp_id, $file])}}"> <span class="fa fa-trash"></span> </a></td>
                                           </tr>
                                       @endforeach
                                   </tbody>
