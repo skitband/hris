@@ -28,7 +28,7 @@
     <div class="card-body login-card-body">
       <p class="login-box-msg">Forgot Password</p>
 
-      <form role="form" method="POST" action="{{ url('/password/email') }}">
+      <form role="form" method="POST" action="{{ url('password/email') }}">
         {{ csrf_field() }}
 
         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">

@@ -3,7 +3,6 @@
 <script src="{{asset('plugins/jquery/jquery.min.js')}}"></script>
 <!-- Bootstrap 4 -->
 <script src="{{asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
-
 <!-- ChartJS 1.0.2 -->
 <!-- <script src="{{asset('plugins/chartjs-old/Chart.min.js')}}"></script> -->
 <!-- PAGE SCRIPTS -->
@@ -24,12 +23,15 @@
 <!-- iCheck -->
 <script src="{{asset('plugins/iCheck/icheck.min.js')}}"></script>
 
-<script src="{{asset('js/custom.js')}}"></script>
-
 <!-- DataTables -->
 <script src="{{asset('js/dataTables.min.js')}}"></script>
 <script src="{{asset('js/dataTables.buttons.min.js')}}"></script>
 
+<!-- Select 2 -->
+<script src="{{asset('plugins/select2/select2.min.js')}}"></script>
+
+<!-- Application JS -->
+<script src="{{asset('js/custom.js')}}"></script>
 
 
 <script>

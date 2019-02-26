@@ -54,7 +54,7 @@
         <a href="{{ url('/register') }}" class="text-center">Register</a>
       </p>
       <p class="mb-1">
-        <a href="{{ url('/password/reset') }}">Forgot Password</a>
+        <a href="{{ url('password/reset') }}">Forgot Password</a>
       </p>
       
     </div>

@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Yajra\Datatables\Datatables;
 use App\Employee;
-use App\User;
+use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
@@ -34,13 +34,8 @@ class EmployeeController extends Controller
        // $employee = Employee::paginate(10);
        // return view('admin/manage')->with("employees", $employee);
 
-        return view('admin/dashboard');
-        
-    }
-
-    public function manage()
-    {
         return view('admin/manage');
+        
     }
 
     public function getEmployees()
@@ -373,4 +368,6 @@ class EmployeeController extends Controller
     {
         //
     }
+
+    
 }

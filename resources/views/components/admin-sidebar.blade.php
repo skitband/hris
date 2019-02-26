@@ -24,7 +24,7 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item has-treeview">
-            <a href="{{route('admin.dashboard')}}" class="nav-link active">
+            <a href="{{route('admin.dashboard')}}" class="nav-link {{ Request::is('admin') ? 'active' : '' }}">
               <i class="nav-icon fa fa-dashboard"></i>
               <p>
                 Admin Dashboard
@@ -52,7 +52,7 @@
             </ul> -->
           </li>
           <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
+            <a href="#" class="nav-link {{ Request::is('admin/employee*') ? 'active' : '' }}">
               <i class="nav-icon fa fa-users"></i>
               <p>
                 Manage Employees
@@ -61,7 +61,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{route('admin.manage')}}" class="nav-link">
+                <a href="{{route('employee.index')}}" class="nav-link">
                   <i class="fa fa-circle-o nav-icon"></i>
                   <p>View Employees</p>
                 </a>
@@ -73,6 +73,14 @@
                 </a>
               </li>
             </ul>
+          </li>
+          <li class="nav-item">
+            <a href="{{route('settings.index')}}" class="nav-link {{ Request::is('admin/settings*') ? 'active' : '' }}">
+              <i class="nav-icon fa fa-gears"></i>
+              <p>
+                 Maintenance
+              </p>
+            </a>
           </li>
           <li class="nav-header">REPORTS</li>
           <li class="nav-item">

@@ -11,9 +11,12 @@
   <link rel="stylesheet" href="{{asset('css/font-awesome.min.css')}}">  
   <!-- Ionicons -->
   <link rel="stylesheet" href="{{asset('css/ionicons.min.css')}}">
+  <!-- iCheck -->
+  <link rel="stylesheet" href="{{asset('plugins/select2/select2.min.css')}}">
   <!-- Theme style -->
   <link rel="stylesheet" href="{{asset('dist/css/adminlte.min.css')}}">
-  <!-- iCheck -->
+  
+  <!-- Select2 -->
   <link rel="stylesheet" href="{{asset('plugins/iCheck/square/blue.css')}}">
   <!-- datatables css -->
   <link rel="stylesheet" href="{{asset('css/datatables.min.css')}}">

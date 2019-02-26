@@ -14,7 +14,7 @@
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}">Home</a></li>
-              <li class="breadcrumb-item"><a href="{{route('admin.manage')}}">Manage Employee</a></li>
+              <li class="breadcrumb-item"><a href="{{route('employee.index')}}">Manage Employee</a></li>
               <li class="breadcrumb-item active">Create Employee</li>
             </ol>
           </div>
